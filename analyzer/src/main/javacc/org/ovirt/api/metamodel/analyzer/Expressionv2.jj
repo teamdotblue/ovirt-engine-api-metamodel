@@ -1,0 +1,375 @@
+options {
+    STATIC = false;
+}
+PARSER_BEGIN(TokenProcessor)
+
+package org.ovirt.api.metamodel.analyzer;
+
+import java.util.ArrayList;
+import java.io.StringReader;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import java.math.BigInteger;
+import java.util.List;
+
+import org.ovirt.api.metamodel.analyzer.MethodExpression;
+import org.ovirt.api.metamodel.analyzer.FieldExpression;
+
+import org.ovirt.api.metamodel.concepts.Name;
+import org.ovirt.api.metamodel.concepts.Expression;
+import org.ovirt.api.metamodel.concepts.LiteralExpression;
+import org.ovirt.api.metamodel.concepts.NameParser;
+import org.ovirt.api.metamodel.concepts.BinaryExpression;
+import org.ovirt.api.metamodel.concepts.Operator;
+import org.ovirt.api.metamodel.concepts.UnaryExpression;
+import org.ovirt.api.metamodel.concepts.ArrayExpression;
+
+public class TokenProcessor {
+
+    public static List<Expression> processTokens(String input) throws ParseException {
+        String cleanString = removeLineComments(input);
+        TokenProcessor tk = new TokenProcessor(new StringReader(cleanString));
+        return tk.parse();
+    }
+
+    public FieldExpression createExpression(String input) {
+        FieldExpression expression = new FieldExpression();
+        expression.setField(NameParser.parseUsingCase(input));
+        return expression;
+    }
+
+    public BinaryExpression createSimpleBinary(String input, Operator operation) {
+        String splitter = "\\" + operation.toString();
+        String[] splitInput = input.split(splitter);
+        BinaryExpression binary = new BinaryExpression();
+        if (splitInput.length > 2) {
+            BinaryExpression leftHand = new BinaryExpression();
+            leftHand.setOperator(operation);
+            leftHand.setLeft(createExpression(splitInput[0].trim()));
+            leftHand.setRight(createExpression(splitInput[1].trim()));
+            binary.setRight(createExpression(splitInput[2].trim()));
+            binary.setLeft(leftHand);
+            binary.setOperator(operation);
+        }
+        else {
+            binary.setLeft(createExpression(splitInput[0].trim()));
+            binary.setRight(createExpression(splitInput[1].trim()));
+            binary.setOperator(operation);
+        }
+        return binary;
+    }
+
+
+
+    public static String removeLineComments(String input) {
+        String commentPattern = "//.*?\n";
+        Pattern pattern = Pattern.compile(commentPattern);
+        Matcher matcher = pattern.matcher(input);
+        String noCommentLine = matcher.replaceAll("");
+        String blockPattern = "(?s)/\\*.*?\\*/";
+        Pattern blockP = Pattern.compile(blockPattern);
+        Matcher match2 = blockP.matcher(noCommentLine);
+        return match2.replaceAll("");
+    }
+}
+
+PARSER_END(TokenProcessor)
+
+// Define tokens
+TOKEN : {
+    < RETURN : "return" > |
+    < NULL : "null" > |
+    < SEMICOLON : ";" > |
+    < FALSE : "false" > |
+    < TRUE : "true" > |
+    < ASSERT : "assert" > |
+    < NUMBER : ["0" - "9"] > |
+    < LETTER : (["a" - "z"])+ > |
+    < FIELD_CHAIN : (["a" - "z"])+ ("." (["a" - "z"])+)+ > |
+    < ADDITION : <LETTER> ((" ")* "+" (" ")* <LETTER>)+ > |
+    < SUBTRACT: <LETTER> (" ")* "-" (" ")* <LETTER> > |
+    < MULTIPLY: <LETTER> (" ")* "*" (" ")* <LETTER> > |
+    < DIVIDE: <LETTER> (" ")* "/" (" ")* <LETTER> > |
+    < REMAINDER: <LETTER> (" ")* "%" (" ")* <LETTER> > |
+    < AND : <LETTER> (" ")* "&&" (" ")* <LETTER> > |
+    < NOT: "!" <LETTER> > |
+    < OR: <LETTER> (" ")* "||" (" ")* <LETTER> > |
+    < METHOD: <LETTER> (("_")+)? "()" > |
+    <METHOD_CHAIN: <METHOD> ("." <METHOD>)+> |
+    <ARRAY: <LETTER> "[" <NUMBER> "]"> |
+    <TIMES: "*" (" ")* <LETTER> > |
+    <DIVISION: "/" ((" ")*)? <LETTER> > |
+    <OPEN_PARAN: "(" > |
+    <CLOSE_PARAN: ")" > |
+    <MINUS: "-" (" ")* <LETTER> > |
+    <POS_SIGN: "+" > |
+    <MULT_SIGN: "*" > |
+    <MINUS_SIGN: "-" > |
+    <DIVIDE_SIGN: "/" >
+}
+
+SKIP : {
+    " " | "\t" | "\r" | "\n" | "_"
+}
+
+// Entry point
+List<Expression> parse() :
+{
+    Token t;
+    List<Expression> result = new ArrayList<>();
+    String left;
+    String right;
+    Boolean paranOpen = false;
+    Boolean paranUsed = false;
+    Operator lastSeen = null;
+}
+{
+    (
+    <POS_SIGN> {
+        lastSeen = Operator.ADD;
+    }
+    |
+    <MULT_SIGN> {
+        lastSeen = Operator.MULTIPLY;
+    }
+    |
+    <MINUS_SIGN> {
+        lastSeen = Operator.SUBTRACT;
+    }
+    |
+    <DIVIDE_SIGN> {
+        lastSeen = Operator.DIVIDE;
+    }
+    |
+    <RETURN>
+    |
+    <SEMICOLON>
+    |
+    <ASSERT>
+    |
+    <OPEN_PARAN> {
+        paranOpen = true;
+        paranUsed = false;
+    }
+    |
+    <CLOSE_PARAN> {
+        paranOpen = false;
+        paranUsed = true;
+    }
+    |
+    <NULL> {
+        LiteralExpression lit = new LiteralExpression();
+        lit.setValue(null);
+        result.add(lit);
+    }
+    |
+    <FALSE> {
+        LiteralExpression lit = new LiteralExpression();
+        lit.setValue(false);
+        result.add(lit);
+    }
+    |
+    <TRUE> {
+        LiteralExpression lit = new LiteralExpression();
+        lit.setValue(true);
+        result.add(lit);
+    }
+    |
+    t = <NUMBER> {
+        LiteralExpression lit = new LiteralExpression();
+        lit.setValue(new BigInteger(t.image));
+        result.add(lit);
+    }
+    |
+    t = <FIELD_CHAIN> {
+        String[] split = t.image.split("\\.");
+        FieldExpression target = null;
+        for(int i = 0; i <= split.length - 1; i++) {
+            FieldExpression field = createExpression(split[i]);
+            if (target != null) {
+                field.setTarget(target);
+            }
+            target = field;
+        }
+        result.add(target);
+    }
+    |
+    t = <ADDITION> {
+        System.out.println("Reached with " + t.image);
+        if (paranOpen) {
+            if (result.size() != 0) {
+                FieldExpression before = (FieldExpression) result.get(result.size() -1);
+                BinaryExpression binary = createSimpleBinary(t.image, Operator.ADD);
+                BinaryExpression newBinary = new BinaryExpression();
+                newBinary.setLeft(before);
+                newBinary.setRight(binary);
+                newBinary.setOperator(lastSeen);
+                result.set(result.size() -1, newBinary);
+            } else {
+                BinaryExpression binary = createSimpleBinary(t.image, Operator.ADD);
+                result.add(binary);
+            }
+        } else {
+            BinaryExpression binary = createSimpleBinary(t.image, Operator.ADD);
+            result.add(binary);
+        }
+    }
+    |
+    t = <MULTIPLY> {
+        BinaryExpression binary = createSimpleBinary(t.image, Operator.MULTIPLY);
+        result.add(binary);
+    }
+    |
+    t = <SUBTRACT> {
+        if (!t.image.split("\\-")[0].trim().equals("return")) {
+            if (paranOpen) {
+                if (result.size() != 0) {
+                    FieldExpression before = (FieldExpression) result.get(result.size() -1);
+                    BinaryExpression binary = createSimpleBinary(t.image, Operator.SUBTRACT);
+                    BinaryExpression newBinary = new BinaryExpression();
+                    newBinary.setLeft(before);
+                    newBinary.setRight(binary);
+                    newBinary.setOperator(lastSeen);
+                    result.set(result.size() -1, newBinary);
+                } else {
+                    BinaryExpression binary = createSimpleBinary(t.image, Operator.SUBTRACT);
+                    result.add(binary);
+                }
+            } else {
+                BinaryExpression binary = createSimpleBinary(t.image, Operator.SUBTRACT);
+                result.add(binary);
+            }
+        } else {
+            String unVal = t.image.split("\\-")[1];
+            UnaryExpression unexp = new UnaryExpression();
+            unexp.setOperator(Operator.SUBTRACT);
+            unexp.setOperand(createExpression(unVal.trim()));
+            result.add(unexp);
+        }
+    }
+    |
+    t = <DIVIDE> {
+        BinaryExpression binary = createSimpleBinary(t.image, Operator.DIVIDE);
+        result.add(binary);
+    }
+    |
+    t = <MINUS> {
+        String val = t.image.substring(1);
+        UnaryExpression un = new UnaryExpression();
+        un.setOperator(Operator.SUBTRACT);
+        un.setOperand(createExpression(val.trim()));
+        result.add(un);
+    }
+    |
+    t = <REMAINDER> {
+        BinaryExpression binary = createSimpleBinary(t.image, Operator.REMAINDER);
+        result.add(binary);
+    }
+    |
+    t = <AND> {
+        String[] splitInput = t.image.split("&&");
+        BinaryExpression binary = new BinaryExpression();
+        binary.setLeft(createExpression(splitInput[0].trim()));
+        binary.setRight(createExpression(splitInput[1].trim()));
+        binary.setOperator(Operator.AND);
+        result.add(binary);
+    }
+    |
+    t = <OR> {
+        String[] splitInput = t.image.split("\\|\\|");
+        BinaryExpression binary = new BinaryExpression();
+        binary.setLeft(createExpression(splitInput[0].trim()));
+        binary.setRight(createExpression(splitInput[1].trim()));
+        binary.setOperator(Operator.OR);
+        result.add(binary);
+    }
+    |
+    t = <NOT> {
+        UnaryExpression expression = new UnaryExpression();
+        expression.setOperator(Operator.NOT);
+        expression.setOperand(createExpression(t.image.substring(1)));
+        result.add(expression);
+    }
+    |
+    t = <METHOD> {
+        MethodExpression exp = new MethodExpression();
+        String methodName = t.image.replaceAll("\\(.*?\\)", "").replaceAll("_","");
+        exp.setMethod(NameParser.parseUsingCase(methodName));
+        result.add(exp);
+    }
+    |
+    t = <METHOD_CHAIN> {
+        String[] methodSplit = t.image.split("\\.");
+        MethodExpression target = null;
+        for(int i = 0; i <= methodSplit.length - 1; i++) {
+            String methodName = methodSplit[i].replaceAll("\\(.*?\\)", "");
+            MethodExpression field = new MethodExpression();
+            field.setMethod(NameParser.parseUsingCase(methodName));
+            if (target != null) {
+                field.setTarget(target);
+            }
+            target = field;
+        }
+        result.add(target);
+    }
+    |
+    t = <ARRAY> {
+        String arrayName = t.image.split("\\[")[0];
+        FieldExpression field = createExpression(arrayName);
+        ArrayExpression rayxp = new ArrayExpression();
+        rayxp.setArray(field);
+        Pattern pattern = Pattern.compile("\\[(\\d+)\\]");
+        Matcher matcher = pattern.matcher(t.image);
+        if(matcher.find()) {
+            LiteralExpression num = new LiteralExpression();
+            num.setValue(new BigInteger(matcher.group(1)));
+            rayxp.setIndex(num);
+        }
+        result.add(rayxp);
+    }
+    |
+    t = <TIMES> {
+        String multiplier = t.image.substring(1);
+        BinaryExpression before = (BinaryExpression) result.get(result.size() -1);
+        BinaryExpression add = new BinaryExpression();
+        if (paranUsed) {
+            add.setLeft(before);
+            add.setRight(createExpression(multiplier.trim()));
+            add.setOperator(Operator.MULTIPLY);
+            result.set(result.size() -1, add);
+        } else {
+            add.setLeft(before.getRight());
+            add.setRight(createExpression(multiplier.trim()));
+            add.setOperator(Operator.MULTIPLY);
+            before.setRight(add);
+            result.set(result.size() - 1, before);
+        }
+    }
+    |
+    t = <DIVISION> {
+        String divider = t.image.substring(1);
+        BinaryExpression before = (BinaryExpression) result.get(result.size() -1);
+        BinaryExpression divide = new BinaryExpression();
+        if (paranUsed) {
+            divide.setRight(createExpression(divider.trim()));
+            divide.setLeft(before);
+            divide.setOperator(Operator.DIVIDE);
+            result.set(result.size()-1, divide);
+        } else {
+            divide.setLeft(before.getRight());
+            divide.setRight(createExpression(divider.trim()));
+            divide.setOperator(Operator.DIVIDE);
+            before.setRight(divide);
+            result.set(result.size()-1, before);
+        }
+    }
+    |
+    t = <LETTER> {
+        FieldExpression field = createExpression(t.image);
+        result.add(field);
+    }
+)* {
+    return result;
+} 
+}

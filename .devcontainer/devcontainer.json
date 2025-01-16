@@ -1,0 +1,6 @@
+{
+    "name": "oVirt-metamodel",
+    "build": {
+        "dockerfile": "../Dockerfile"
+    }
+}
