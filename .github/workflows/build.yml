@@ -31,6 +31,9 @@ jobs:
     steps:
     - name: Checkout sources
       uses: ovirt/checkout-action@main
+    
+    - name: enable EPEL repository
+      run: dnf install -y epel-release
 
     - name: Use cache for maven
       uses: actions/cache@v4
