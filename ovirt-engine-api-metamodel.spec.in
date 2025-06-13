@@ -18,7 +18,6 @@ AutoReq:	no
 
 BuildRequires:	java-21-openjdk-devel
 BuildRequires:	maven-local >= 4.0.0
-BuildRequires:  maven-javadoc
 BuildRequires:	mvn(commons-io:commons-io)
 BuildRequires:	mvn(jakarta.activation:jakarta.activation-api)
 BuildRequires:	mvn(jakarta.servlet:jakarta.servlet-api)
@@ -34,7 +33,6 @@ BuildRequires:	mvn(org.codehaus.mojo:exec-maven-plugin)
 BuildRequires:	mvn(org.jboss.weld.se:weld-se-shaded)
 BuildRequires:	mvn(org.slf4j:slf4j-jdk14)
 BuildRequires:  mvn(org.codehaus.mojo:javacc-maven-plugin)
-BuildRequires: mvn(org.apache.maven.reporting:maven-reporting-api)
 
 # Required because of old xmvn package on COPR
 BuildRequires:	maven
