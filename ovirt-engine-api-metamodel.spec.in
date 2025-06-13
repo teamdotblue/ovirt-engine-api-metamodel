@@ -18,6 +18,7 @@ AutoReq:	no
 
 BuildRequires:	java-21-openjdk-devel
 BuildRequires:	maven-local >= 4.0.0
+BuildRequires:  maven-javadoc
 BuildRequires:	mvn(commons-io:commons-io)
 BuildRequires:	mvn(jakarta.activation:jakarta.activation-api)
 BuildRequires:	mvn(jakarta.json:jakarta.json-api)
@@ -37,6 +38,10 @@ BuildRequires:	mvn(org.jboss.weld.se:weld-se-shaded)
 BuildRequires:	mvn(org.ovirt.maven.plugins:ovirt-jboss-modules-maven-plugin)
 BuildRequires:	mvn(org.slf4j:slf4j-jdk14)
 BuildRequires:  mvn(org.codehaus.mojo:javacc-maven-plugin)
+BuildRequires: mvn(org.apache.maven.reporting:maven-reporting-api)
+BuildRequires: mvn(org.apache.maven.shared:maven-invoker)
+BuildRequires: mvn(org.apache.maven.doxia:doxia-sink-api)
+BuildRequires: mvn(org.apache.maven.doxia:doxia-site-renderer)
 
 # Required because of old xmvn package on COPR
 BuildRequires:	maven
@@ -65,11 +70,11 @@ Summary:	Server runtime of model management
 Group:		%{ovirt_product_group}
 
 # We need to disable automatic generation of "Requires: java-headless >= 1:11"
-# by xmvn, becase JDK 11 doesn't provide java-headless artifact, but it
+# by xmvn, because JDK 11 doesn't provide java-headless artifact, but it
 # provides java-11-headless.
 AutoReq:	no
 
-Requires:	java-1.21.0-openjdk-headless >= 1:21.0.0
+Requires:	java-21-openjdk-headless >= 1:21.0.0
 Requires:	javapackages-filesystem
 Requires:	mvn(jakarta.activation:jakarta.activation-api)
 Requires:	mvn(jakarta.servlet:jakarta.servlet-api)
