@@ -90,6 +90,12 @@ Requires:	mvn(org.slf4j:slf4j-api)
 # on asciidoctorj
 %pom_disable_module doctool
 
+# Disable javadoc/site generation because the plugins can't resolve offline
+%pom_remove_plugin :maven-javadoc-plugin
+%pom_remove_plugin :maven-site-plugin
+%pom_remove_plugin :maven-invoker-plugin
+%pom_remove_plugin :maven-project-info-reports-plugin
+
 %if %{?skip_tests}
 # We need to skip test execution on COPR due to some weld classloading issues
 %pom_disable_module tests
