@@ -7,8 +7,8 @@ package org.ovirt.api.metamodel.tool;
 
 import java.util.HashMap;
 import java.util.Map;
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 
 /**
  * This class contains methods useful to do computations with words.

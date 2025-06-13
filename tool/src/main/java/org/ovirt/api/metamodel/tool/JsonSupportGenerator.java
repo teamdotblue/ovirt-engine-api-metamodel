@@ -11,8 +11,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
-import javax.inject.Inject;
-import javax.json.stream.JsonParser;
+import jakarta.inject.Inject;
+import jakarta.json.stream.JsonParser;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.ListType;

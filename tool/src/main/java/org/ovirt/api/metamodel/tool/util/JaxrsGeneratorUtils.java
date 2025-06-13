@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.MemberInvolvementTree;

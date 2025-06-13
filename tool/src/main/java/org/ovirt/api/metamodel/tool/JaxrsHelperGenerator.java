@@ -10,7 +10,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.ListType;
@@ -33,8 +33,9 @@ public class JaxrsHelperGenerator extends JavaGenerator {
     private static final Name ACTION = NameParser.parseUsingCase("Action");
 
     // Reference to the object that calculate names:
-    @Inject private Names names;
-    @Inject private JavaNames javaNames;
+    @Inject
+    @Style("plain")
+    private JavaNames javaNames;
     @Inject private JaxrsNames jaxrsNames;
     @Inject private SchemaNames schemaNames;
 

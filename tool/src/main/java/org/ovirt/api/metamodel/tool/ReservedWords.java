@@ -5,7 +5,10 @@
 
 package org.ovirt.api.metamodel.tool;
 
-import javax.inject.Qualifier;
+import jakarta.inject.Qualifier;
+
+import jakarta.enterprise.util.Nonbinding;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -16,10 +19,11 @@ import java.lang.annotation.Target;
  */
 @Qualifier
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.METHOD, ElementType.FIELD })
+@Target({ ElementType.METHOD, ElementType.FIELD, ElementType.PARAMETER, ElementType.TYPE })
 public @interface ReservedWords {
     /**
      * The name of the programming language, for example <i>java</i>.
      */
+    @Nonbinding
     String language();
 }

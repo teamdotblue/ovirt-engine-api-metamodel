@@ -8,8 +8,8 @@ package org.ovirt.api.metamodel.tool;
 import static java.util.stream.Collectors.joining;
 
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Name;
 

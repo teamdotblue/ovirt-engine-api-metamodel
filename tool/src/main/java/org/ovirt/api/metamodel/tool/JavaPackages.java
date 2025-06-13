@@ -9,7 +9,7 @@ import static java.util.stream.Collectors.joining;
 
 import java.util.ArrayList;
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.ovirt.api.metamodel.concepts.Module;
 import org.ovirt.api.metamodel.concepts.Name;

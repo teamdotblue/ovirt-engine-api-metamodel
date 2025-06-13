@@ -7,8 +7,8 @@ package org.ovirt.api.metamodel.tool;
 
 import static java.util.stream.Collectors.joining;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Name;
 import org.ovirt.api.metamodel.concepts.Service;
@@ -27,7 +27,9 @@ public class JaxrsNames {
 
     // References to objects used to calculate Java names:
     @Inject JavaPackages javaPackages;
-    @Inject JavaNames javaNames;
+    @Inject
+    @Style("plain")
+    JavaNames javaNames;
 
     /**
      * Calculates the name of the JAX-RS interface that corresponds to the given service.

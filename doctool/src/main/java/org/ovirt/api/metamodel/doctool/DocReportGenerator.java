@@ -9,7 +9,7 @@ import static java.util.stream.Collectors.joining;
 
 import java.io.File;
 import java.io.IOException;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.ovirt.api.metamodel.concepts.Annotation;
 import org.ovirt.api.metamodel.concepts.AnnotationParameter;

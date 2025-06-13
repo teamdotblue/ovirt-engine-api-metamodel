@@ -5,9 +5,9 @@
 
 package org.ovirt.api.metamodel.tool;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.inject.Produces;
-import javax.inject.Singleton;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Singleton;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;

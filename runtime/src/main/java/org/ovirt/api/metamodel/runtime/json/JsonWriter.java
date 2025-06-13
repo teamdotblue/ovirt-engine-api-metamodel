@@ -20,10 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-import javax.json.Json;
-import javax.json.JsonException;
-import javax.json.stream.JsonGenerator;
-import javax.json.stream.JsonGeneratorFactory;
+import jakarta.json.Json;
+import jakarta.json.JsonException;
+import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonGeneratorFactory;
 
 /**
  * This class wraps the {@link JsonGenerator} class so that the methods don't send checked exceptions, in order to

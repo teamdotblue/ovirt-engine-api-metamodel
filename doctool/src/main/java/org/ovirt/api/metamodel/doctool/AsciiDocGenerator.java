@@ -18,8 +18,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.Attribute;
 import org.ovirt.api.metamodel.concepts.Concept;
@@ -41,7 +41,6 @@ import org.ovirt.api.metamodel.concepts.StructMember;
 import org.ovirt.api.metamodel.concepts.StructType;
 import org.ovirt.api.metamodel.concepts.Type;
 import org.ovirt.api.metamodel.tool.Names;
-import org.ovirt.api.metamodel.tool.Style;
 
 /**
  * This class takes a model and generates the corresponding AsciiDoc documentation.

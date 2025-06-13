@@ -5,8 +5,8 @@
 
 package org.ovirt.api.metamodel.doctool;
 
-import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
+import jakarta.annotation.PostConstruct;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import org.asciidoctor.Attributes;
 

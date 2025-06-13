@@ -12,8 +12,8 @@
   </resources>
 
   <dependencies>
-    <module name="javax.json.api"/>
-    <module name="javax.xml.stream.api"/>
+    <module name="jakarta.json.api"/>
+    <module name="jakarta.xml.stream.api"/>
   </dependencies>
 
 </module>

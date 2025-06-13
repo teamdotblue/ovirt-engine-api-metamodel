@@ -20,9 +20,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-import javax.json.Json;
-import javax.json.JsonException;
-import javax.json.stream.JsonParser;
+import jakarta.json.Json;
+import jakarta.json.JsonException;
+import jakarta.json.stream.JsonParser;
 
 /**
  * This class wraps the {@link JsonParser} class so that the methods don't send checked exceptions, in order to

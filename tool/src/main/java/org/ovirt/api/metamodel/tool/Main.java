@@ -5,7 +5,6 @@
 
 package org.ovirt.api.metamodel.tool;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.jboss.weld.environment.se.Weld;
@@ -31,6 +30,35 @@ public class Main {
     }
 
     public static void main(String[] args) {
+        // if (args.length < 1) {
+        //     log.error("The first argument must be the fully qualified name of the tool class.");
+        //     System.exit(1);
+        // }
+    
+        // String toolName = args[0];
+        // String[] toolArgs = new String[args.length - 1];
+        // System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
+        // try {
+        //     // Dynamically load the tool class
+        //     Class<?> toolClass = Class.forName(toolName);
+
+        //     // Create and initialize CDI container with the tool class
+        //     Weld weld = new Weld();
+        //     try (WeldContainer container = weld.initialize()) {
+        //         // Get the CDI-managed instance
+        //         Object toolBean = container.select(toolClass).get();
+        //         // Find and invoke its run(String[]) method
+        //         Method runMethod = toolClass.getMethod("run", String[].class);
+        //         runMethod.invoke(toolBean, (Object) toolArgs);
+        //     }
+        //     weld.shutdown();
+        // } catch (ClassNotFoundException e) {
+        //     log.error("Can't find tool class \"{}\".", toolName, e);
+        //     System.exit(1);
+        // } catch (Exception e) {
+        //     log.error("Error while executing the \"run\" method of tool class \"{}\".", toolName, e);
+        //     System.exit(1);
+        // }
         // The first argument must be the name of the tool class:
         if (args.length < 1) {
             log.error("The first argument must be the fully qualified name of the tool class.");
@@ -42,42 +70,16 @@ public class Main {
         String[] toolArgs = new String[args.length - 1];
         System.arraycopy(args, 1, toolArgs, 0, toolArgs.length);
 
-        // Load the tool class:
-        ClassLoader toolLoader = Thread.currentThread().getContextClassLoader();
-        Class<?> toolClass = null;
-        try {
-            toolClass = toolLoader.loadClass(toolName);
-        }
-        catch (ClassNotFoundException exception) {
-            log.error("Can't load tool class \"{}\".", toolName, exception);
-            System.exit(1);
-        }
-
         // Create the CDI container:
         Weld weld = new Weld();
-        WeldContainer container = weld.initialize();
-
-        // Create a CDI bean for the tool class:
-        Object toolBean = container.instance().select(toolClass).get();
-
-        // Find and execute the "run" method of the CDI bean:
-        Method runMethod = null;
-        try {
-            runMethod = toolClass.getMethod("run", String[].class);
-        }
-        catch (NoSuchMethodException exception) {
-            log.error("Can't find the \"run\" method in tool class \"{}\".", toolName, exception);
+        try (WeldContainer container = weld.initialize()) {
+            Tool tool = container.select(Tool.class).get();
+            tool.run(toolArgs);
+        } catch (Exception e) {
+            log.error("Error while executing the \"run\" method of tool class \"{}\".", toolName, e);
             System.exit(1);
         }
-        try {
-            runMethod.invoke(toolBean, new Object[] { toolArgs });
-        }
-        catch (IllegalAccessException | InvocationTargetException exception) {
-            log.error("Error while executing the \"run\" method of tool class \"{}\".", toolName, exception);
-            System.exit(1);
-        }
-
         // When the tool finishes, shutdown the CDI container:
-        weld.shutdown();
+        // weld.shutdown();
     }
 }

@@ -5,10 +5,10 @@ import static java.util.stream.Collectors.joining;
 
 import java.io.IOException;
 import java.util.Iterator;
-import javax.inject.Inject;
-import javax.xml.bind.annotation.XmlType;
-import javax.xml.bind.annotation.adapters.XmlAdapter;
-import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import jakarta.inject.Inject;
+import jakarta.xml.bind.annotation.XmlType;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.EnumValue;
@@ -20,6 +20,7 @@ public class EnumGeneratorJaxb extends JavaGenerator {
     @Inject
     private JavaPackages javaPackages;
     @Inject
+    @Style("plain")
     private JavaNames javaNames;
 
     // The buffer used to generate the source code:

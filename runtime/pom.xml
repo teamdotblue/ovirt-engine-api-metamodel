@@ -24,12 +24,18 @@
 
     <!-- This is needed in order to generate JSON: -->
     <dependency>
-      <groupId>javax.json</groupId>
-      <artifactId>javax.json-api</artifactId>
+      <groupId>jakarta.json</groupId>
+      <artifactId>jakarta.json-api</artifactId>
     </dependency>
     <dependency>
       <groupId>org.glassfish</groupId>
-      <artifactId>javax.json</artifactId>
+      <artifactId>jakarta.json</artifactId>
+      <version>2.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.parsson</groupId>
+      <artifactId>parsson</artifactId>
+      <version>1.1.1</version>
     </dependency>
 
     <dependency>
@@ -43,14 +49,14 @@
     <pluginManagement>
       <plugins>
 
-        <!-- Make sure we use Java 7. -->
+        <!-- Make sure we use Java 8. -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.1</version>
           <configuration>
-            <source>1.7</source>
-            <target>1.7</target>
+            <source>1.8</source>
+            <target>1.8</target>
           </configuration>
         </plugin>
 

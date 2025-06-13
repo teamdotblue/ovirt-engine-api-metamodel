@@ -9,8 +9,8 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
 import java.util.List;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.ListType;

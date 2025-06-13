@@ -12,8 +12,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.ListType;
 import org.ovirt.api.metamodel.concepts.Model;
@@ -88,7 +88,9 @@ public class SchemaNames {
 
     // References to the objects used to compute names:
     @Inject Names names;
-    @Inject JavaNames javaNames;
+    @Inject
+    @Style("plain") 
+    JavaNames javaNames;
     @Inject JavaPackages javaPackages;
 
     public JavaTypeReference getXjcTypeReference(Type type) {

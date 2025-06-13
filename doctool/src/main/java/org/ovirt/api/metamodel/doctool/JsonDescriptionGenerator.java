@@ -13,11 +13,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
-import javax.json.Json;
-import javax.json.stream.JsonGenerator;
-import javax.json.stream.JsonGeneratorFactory;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
+import jakarta.json.Json;
+import jakarta.json.stream.JsonGenerator;
+import jakarta.json.stream.JsonGeneratorFactory;
 
 import org.ovirt.api.metamodel.concepts.Annotation;
 import org.ovirt.api.metamodel.concepts.AnnotationParameter;

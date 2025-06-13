@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Stream;
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import org.ovirt.api.metamodel.concepts.EnumType;
 import org.ovirt.api.metamodel.concepts.Link;
