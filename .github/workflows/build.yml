@@ -40,6 +40,10 @@ jobs:
         restore-keys: |
           ${{ matrix.shortcut }}-maven-
 
+    - name: Pre fetch needed maven compiler plugin
+      run: |
+        mvn org.apache.maven.plugins:maven-compiler-plugin:3.10.1:help --batch-mode
+
     - name: Perform build
       run: |
         .automation/build-rpm.sh $ARTIFACTS_DIR
