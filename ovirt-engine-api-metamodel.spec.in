@@ -88,10 +88,6 @@ Requires:	mvn(org.slf4j:slf4j-api)
 %pom_remove_plugin :maven-javadoc-plugin pom.xml
 %endif
 
-# maven-release-plugin is not used during package build, so we can remove it
-# from pom.xml
-%pom_remove_plugin :maven-release-plugin pom.xml
-
 # server needs to be in a standalone package, as it needs to be distributed along with oVirt engine
 %mvn_package ":metamodel-server" ovirt-engine-api-metamodel-server
 
