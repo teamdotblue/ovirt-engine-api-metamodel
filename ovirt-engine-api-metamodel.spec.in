@@ -11,9 +11,9 @@ Source0:	%{name}-%{version}.tar.gz
 
 BuildArch:	noarch
 
-# We need to disable automatic generation of "Requires: java-headless >= 1:11"
-# by xmvn, becase JDK 11 doesn't provide java-headless artifact, but it
-# provides java-11-headless.
+# We need to disable automatic generation of "Requires: java-headless >= 1:21"
+# by xmvn, becase JDK 21 doesn't provide java-headless artifact, but it
+# provides java-21-headless.
 AutoReq:	no
 
 BuildRequires:	java-21-openjdk-devel
@@ -59,8 +59,8 @@ Summary:	Server runtime of model management
 Group:		%{ovirt_product_group}
 
 # We need to disable automatic generation of "Requires: java-headless >= 1:11"
-# by xmvn, because JDK 11 doesn't provide java-headless artifact, but it
-# provides java-11-headless.
+# by xmvn, because JDK 21 doesn't provide java-headless artifact, but it
+# provides java-21-headless.
 AutoReq:	no
 
 Requires:	java-21-openjdk-headless >= 1:21.0.0

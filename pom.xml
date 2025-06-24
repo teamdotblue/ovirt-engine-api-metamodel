@@ -225,14 +225,11 @@
     <pluginManagement>
       <plugins>
 
-        <!-- Make sure we use Java 21. -->
+        <!-- Use the latest Java version available in the build environment: -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.11.0</version>
-          <configuration>
-            <release>21</release>
-          </configuration>
         </plugin>
 
         <!-- Attach sources during the package phase, so that if there is
@@ -313,7 +310,6 @@
           </execution>
         </executions>
         <configuration>
-          <release>21</release>
 	        <doclint>none</doclint>
         </configuration>
       </plugin>

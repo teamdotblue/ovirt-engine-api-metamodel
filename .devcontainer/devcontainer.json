@@ -1,14 +1,16 @@
 {
-    "name": "oVirt-meta-model",
+    "name": "ovirt-engine-api-metamodel",
+    "mounts": [
+        "source=${localEnv:HOME}/.m2,target=/root/.m2,type=bind,consistency=cached"
+    ],
     "remoteUser": "root",
-    // Or use a Dockerfile or Docker Compose file. More info: https://containers.dev/guide/dockerfile    
     "image": "mcr.microsoft.com/devcontainers/java:21-bullseye",
-        "features": {
-            "ghcr.io/devcontainers/features/java:1": {
-                "version": "none",
-                "installMaven": "false",
-                "installGradle": "false"
-            }
-        },
-        "postCreateCommand": "sudo apt-get update && sudo apt-get install -y maven"
+    "features": {
+        "ghcr.io/devcontainers/features/java:1": {
+            "version": "none",
+            "installMaven": "true",
+            "mavenVersion": "3.9.6",
+            "installGradle": "true"
+        }
+    }
 }
