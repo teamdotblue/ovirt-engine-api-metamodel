@@ -32,16 +32,19 @@ jobs:
     - name: Checkout sources
       uses: ovirt/checkout-action@main
 
-    # - name: Use cache for maven
-    #   uses: actions/cache@v4
-    #   with:
-    #     path: /root/.m2/repository
-    #     key: ${{ matrix.shortcut }}-maven-${{ hashFiles('**/pom.xml') }}
-    #     restore-keys: |
-    #       ${{ matrix.shortcut }}-maven-
+    - name: Use cache for maven
+      uses: actions/cache@v4
+      with:
+        path: /root/.m2/repository
+        key: ${{ matrix.shortcut }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ matrix.shortcut }}-maven-
 
     - name: Perform build
       run: |
+        dnf clean all && \
+        rm -rf /var/cache/dnf && \
+        dnf makecache --refresh || true && \
         .automation/build-rpm.sh $ARTIFACTS_DIR
 
     - name: Upload artifacts
