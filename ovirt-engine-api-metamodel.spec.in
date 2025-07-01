@@ -16,7 +16,7 @@ BuildArch:	noarch
 # provides java-11-headless.
 AutoReq:	no
 
-BuildRequires:	java-11-openjdk-devel
+BuildRequires:	java-21-openjdk-devel
 BuildRequires:	maven-local >= 4.0.0
 BuildRequires:	mvn(commons-io:commons-io)
 BuildRequires:	mvn(jakarta.activation:jakarta.activation-api)
@@ -42,7 +42,7 @@ BuildRequires:	maven
 
 
 Requires:	ovirt-engine-api-metamodel-server
-Requires:	java-11-openjdk-headless >= 1:11.0.0
+Requires:	java-21-openjdk-headless >= 1:21.0.0
 Requires:	javapackages-filesystem
 Requires:	mvn(com.thoughtworks.qdox:qdox)
 Requires:	mvn(commons-cli:commons-cli)
@@ -69,7 +69,7 @@ Group:		%{ovirt_product_group}
 # provides java-11-headless.
 AutoReq:	no
 
-Requires:	java-11-openjdk-headless >= 1:11.0.0
+Requires:	java-21-openjdk-headless >= 1:21.0.0
 Requires:	javapackages-filesystem
 Requires:	mvn(jakarta.activation:jakarta.activation-api)
 Requires:	mvn(javax.servlet:javax.servlet-api)
