@@ -17,12 +17,12 @@ BuildArch:	noarch
 AutoReq:	no
 
 BuildRequires:	java-21-openjdk-devel
-BuildRequires:	maven-local >= 4.0.0
+BuildRequires:	maven-local-openjdk21
+BuildRequires:  jaxb-api
 BuildRequires:	mvn(commons-io:commons-io)
 BuildRequires:	mvn(jakarta.activation:jakarta.activation-api)
 BuildRequires:	mvn(javax.json:javax.json-api)
 BuildRequires:	mvn(javax.servlet:javax.servlet-api)
-BuildRequires:	mvn(javax.xml.bind:jaxb-api)
 BuildRequires:	mvn(junit:junit)
 BuildRequires:	mvn(org.antlr:antlr4-runtime)
 BuildRequires:	mvn(org.antlr:antlr4-maven-plugin)
