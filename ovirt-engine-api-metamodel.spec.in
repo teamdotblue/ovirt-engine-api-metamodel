@@ -29,7 +29,7 @@ BuildRequires:	mvn(org.jboss.resteasy:jaxrs-api)
 BuildRequires:	mvn(org.jboss.weld.se:weld-se-shaded)
 BuildRequires:	mvn(org.ovirt.maven.plugins:ovirt-jboss-modules-maven-plugin)
 BuildRequires:	mvn(org.slf4j:slf4j-jdk14)
-BuildRequires:  javacc
+BuildRequires:  mvn(org.codehaus.mojo:javacc-maven-plugin)
 
 # Required because of old xmvn package on COPR
 BuildRequires:	maven
